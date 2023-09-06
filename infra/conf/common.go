@@ -2,6 +2,7 @@ package conf
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
 
@@ -38,6 +39,11 @@ func (v *StringList) UnmarshalJSON(data []byte) error {
 
 type Address struct {
 	net.Address
+}
+
+func (v *Address) MarshalJSON() ([]byte, error) {
+
+	return []byte(fmt.Sprintf("\"%s\"", v.String())), nil
 }
 
 func (v *Address) UnmarshalJSON(data []byte) error {
@@ -160,6 +166,11 @@ func (v *PortRange) Build() *net.PortRange {
 		From: v.From,
 		To:   v.To,
 	}
+}
+
+func (v *PortRange) MarshalJSON() ([]byte, error) {
+
+	return []byte(fmt.Sprintf("%d", v.From)), nil
 }
 
 // UnmarshalJSON implements encoding/json.Unmarshaler.UnmarshalJSON
